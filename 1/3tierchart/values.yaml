@@ -1,0 +1,46 @@
+# for discovering services and pods
+serviceAccount: discovery-sa
+namespace: default
+
+apps:
+  nodeapp:
+    repository: ylonkar/nodeapp
+    tag: "2.0.0"
+    replicaCount: 2
+  reactapp:
+    repository: ylonkar/reactapp
+    tag: "2.0.0"
+    replicaCount: 2
+  pullPolicy: Always
+
+database:
+  mongo:
+    storageClassName: mongo-storage
+    storageName: mongo-persistent-storage
+    serviceName: mongo
+    replicaSet: rs0
+    replicas: 2
+    port: 27017
+
+service:
+  reactapp:
+    name: reactapp-service
+    type: NodePort
+    protocol: TCP
+    externalPort: 80
+    internalPort: 80
+  nodeapp:
+    name: nodeapp-service
+    type: NodePort
+    protocol: TCP
+    externalPort: 80
+    internalPort: 80
+
+ingress:
+  reactapp:
+    name: react-ingress
+
+resources:
+  staticIp: reactapp
+
+tolerations: []
